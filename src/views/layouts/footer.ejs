@@ -1,0 +1,41 @@
+      </main>
+
+      <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
+        Sistema de Gestión y Registro de Personas &copy; 2026 &bull; Express MVC, Supabase, TailwindCSS y Seguridad OWASP.
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    if (mobileBtn && sidebar) {
+      mobileBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('hidden');
+      });
+    }
+
+    // Máscara interactiva para Cédula (ej: 001-1234567-8)
+    function maskInputCedula(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 11);
+      if (v.length > 3 && v.length <= 10) {
+        v = v.substring(0, 3) + '-' + v.substring(3);
+      } else if (v.length > 10) {
+        v = v.substring(0, 3) + '-' + v.substring(3, 10) + '-' + v.substring(10, 11);
+      }
+      input.value = v;
+    }
+
+    // Máscara interactiva para Teléfono (ej: (809) 555-1234)
+    function maskInputTelefono(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 10);
+      if (v.length > 3 && v.length <= 6) {
+        v = '(' + v.substring(0, 3) + ') ' + v.substring(3);
+      } else if (v.length > 6) {
+        v = '(' + v.substring(0, 3) + ') ' + v.substring(3, 6) + '-' + v.substring(6, 10);
+      }
+      input.value = v;
+    }
+  </script>
+</body>
+</html>

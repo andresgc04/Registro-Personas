@@ -1,0 +1,228 @@
+[
+  {
+    "id": "bol_1794368659947",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion Web",
+    "canal": "email",
+    "destinatarios_count": 6,
+    "imagenes": [
+      {
+        "filename": "boletin_1794368647670_ajhlx0_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794368647670_ajhlx0_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794368647670_ajhlx0_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "1cc7edfa-e5a4-42b6-8b0b-91627e8aaa57",
+    "created_at": "2026-11-11T03:44:19.947Z"
+  },
+  {
+    "id": "bol_1794368623549",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion",
+    "canal": "whatsapp",
+    "destinatarios_count": 6,
+    "imagenes": [],
+    "enviado_por": "1cc7edfa-e5a4-42b6-8b0b-91627e8aaa57",
+    "created_at": "2026-11-11T03:43:43.549Z"
+  },
+  {
+    "id": "bol_1794158690668",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion Web",
+    "canal": "whatsapp",
+    "destinatarios_count": 23,
+    "imagenes": [
+      {
+        "filename": "boletin_1794158690654_rkhhmq_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794158690654_rkhhmq_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794158690654_rkhhmq_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T17:24:50.668Z"
+  },
+  {
+    "id": "bol_1794158663446",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion Web",
+    "canal": "email",
+    "destinatarios_count": 22,
+    "imagenes": [
+      {
+        "filename": "boletin_1794158626241_6yyh9j_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794158626241_6yyh9j_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794158626241_6yyh9j_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T17:24:23.446Z"
+  },
+  {
+    "id": "bol_1794158533530",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion Web",
+    "canal": "email",
+    "destinatarios_count": 22,
+    "imagenes": [
+      {
+        "filename": "boletin_1794158496129_lq8got_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794158496129_lq8got_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794158496129_lq8got_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T17:22:13.530Z"
+  },
+  {
+    "id": "bol_1794158051508",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion Web",
+    "canal": "email",
+    "destinatarios_count": 0,
+    "imagenes": [
+      {
+        "filename": "boletin_1794157921188_zpy73i_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794157921188_zpy73i_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794157921188_zpy73i_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T17:14:11.508Z"
+  },
+  {
+    "id": "bol_1794157899995",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion Web",
+    "canal": "email",
+    "destinatarios_count": 0,
+    "imagenes": [
+      {
+        "filename": "boletin_1794157775179_w7rb6l_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794157775179_w7rb6l_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794157775179_w7rb6l_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T17:11:39.995Z"
+  },
+  {
+    "id": "bol_1794157614866",
+    "titulo": "Probando Desde La Aplicacion Web",
+    "mensaje": "Probando Desde La Aplicacion Web",
+    "canal": "email",
+    "destinatarios_count": 0,
+    "imagenes": [
+      {
+        "filename": "boletin_1794157489636_e2005v_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794157489636_e2005v_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794157489636_e2005v_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T17:06:54.866Z"
+  },
+  {
+    "id": "bol_1794157266927",
+    "titulo": "Probando",
+    "mensaje": "Prueba jajaja",
+    "canal": "email",
+    "destinatarios_count": 0,
+    "imagenes": [
+      {
+        "filename": "boletin_1794157137014_02nd2g_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794157137014_02nd2g_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794157137014_02nd2g_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T17:01:06.927Z"
+  },
+  {
+    "id": "bol_1794156953021",
+    "titulo": "Probando",
+    "mensaje": "Prueba jajaja",
+    "canal": "email",
+    "destinatarios_count": 0,
+    "imagenes": [
+      {
+        "filename": "boletin_1794156828674_4kyqmp_El_interes_compuesto_es_la_8va.jpg",
+        "originalname": "El interes compuesto es la 8va maravilla del mundo.jpg",
+        "mimetype": "image/jpeg",
+        "size": 2362191,
+        "url": "/uploads/boletines/boletin_1794156828674_4kyqmp_El_interes_compuesto_es_la_8va.jpg",
+        "path": "C:\\Users\\Andre\\.gemini\\antigravity\\scratch\\registro-personas-mvc\\src\\public\\uploads\\boletines\\boletin_1794156828674_4kyqmp_El_interes_compuesto_es_la_8va.jpg"
+      }
+    ],
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-11-08T16:55:53.021Z"
+  },
+  {
+    "id": "bol_1793407334343",
+    "titulo": "Probando",
+    "mensaje": "nynunun7u7n",
+    "canal": "whatsapp",
+    "destinatarios_count": 10,
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-10-31T00:42:14.343Z"
+  },
+  {
+    "id": "bol_1793162714529",
+    "titulo": "Probando",
+    "mensaje": "Probando Prueba",
+    "canal": "email",
+    "destinatarios_count": 0,
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-10-28T04:45:14.529Z"
+  },
+  {
+    "id": "bol_1793162113233",
+    "titulo": "Probando",
+    "mensaje": "Probando mensaje hahahah",
+    "canal": "email",
+    "destinatarios_count": 7,
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-10-28T04:35:13.233Z"
+  },
+  {
+    "id": "bol_1793162088794",
+    "titulo": "Probando",
+    "mensaje": "Probando mensaje",
+    "canal": "whatsapp",
+    "destinatarios_count": 7,
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-10-28T04:34:48.794Z"
+  },
+  {
+    "id": "bol_1793161795904",
+    "titulo": "Probando",
+    "mensaje": "Probando Mensaje",
+    "canal": "email",
+    "destinatarios_count": 7,
+    "enviado_por": "4a4fecd5-ab61-422c-9ae0-c6f6d1a719c2",
+    "created_at": "2026-10-28T04:29:55.904Z"
+  }
+]

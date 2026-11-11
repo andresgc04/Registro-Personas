@@ -1,0 +1,93 @@
+[
+  {
+    "id": "d19fc66b-fb10-4edc-b27a-eab381202b97",
+    "codigo": "0040A",
+    "nombre": "Colegio Santa Rosa De Lima",
+    "municipio": "La Romana",
+    "sector": "Centro De La Ciudad",
+    "direccion": "Colegio Santa Rosa De Lima, Centro De La Ciudad, La Romana",
+    "mesas": 100,
+    "electores": 1000,
+    "activo": true,
+    "created_at": "2026-11-11T03:16:29.897+00:00",
+    "updated_at": "2026-11-11T03:16:29.897+00:00"
+  },
+  {
+    "id": "col_1793558465598_v0vb1bc",
+    "codigo": "TEST-999",
+    "nombre": "Recinto de Pruebas Unitarias",
+    "municipio": "Distrito Nacional",
+    "sector": "Naco",
+    "direccion": "Av. Tiradentes #100",
+    "mesas": 3,
+    "electores": 1500,
+    "activo": false,
+    "created_at": "2026-11-01T18:41:05.598Z",
+    "updated_at": "2026-11-01T18:41:05.603Z"
+  },
+  {
+    "id": "col_1793558441825_10d3ucg",
+    "codigo": "0210A",
+    "nombre": "Liceo Ramón Emilio Jiménez",
+    "municipio": "Santo Domingo Este",
+    "sector": "Los Mina",
+    "direccion": "Av. San Vicente de Paúl esq. Av. Venezuela",
+    "mesas": 10,
+    "electores": 5400,
+    "activo": true,
+    "created_at": "2026-11-01T18:40:41.825Z",
+    "updated_at": "2026-11-01T18:40:41.825Z"
+  },
+  {
+    "id": "col_1793558441823_sni7a5v",
+    "codigo": "0104C",
+    "nombre": "Escuela Benito Juárez",
+    "municipio": "Distrito Nacional",
+    "sector": "Bella Vista",
+    "direccion": "Av. Sarasota #48",
+    "mesas": 5,
+    "electores": 2800,
+    "activo": true,
+    "created_at": "2026-11-01T18:40:41.823Z",
+    "updated_at": "2026-11-01T18:40:41.823Z"
+  },
+  {
+    "id": "col_1793558441822_qoibvp2",
+    "codigo": "0089A",
+    "nombre": "Escuela Primaria República de Chile",
+    "municipio": "Distrito Nacional",
+    "sector": "San Carlos",
+    "direccion": "Calle Abreu #54",
+    "mesas": 4,
+    "electores": 2150,
+    "activo": true,
+    "created_at": "2026-11-01T18:40:41.822Z",
+    "updated_at": "2026-11-01T18:40:41.822Z"
+  },
+  {
+    "id": "col_1793558441820_yuw19zj",
+    "codigo": "0045B",
+    "nombre": "Liceo Experimental UASD",
+    "municipio": "Distrito Nacional",
+    "sector": "Gazcue",
+    "direccion": "Av. Dr. Bernardo Correa y Cidrón",
+    "mesas": 8,
+    "electores": 4600,
+    "activo": true,
+    "created_at": "2026-11-01T18:40:41.820Z",
+    "updated_at": "2026-11-01T18:40:41.820Z"
+  },
+  {
+    "id": "col_1793558441819_5nddu5t",
+    "codigo": "0012A",
+    "nombre": "Colegio Claret",
+    "municipio": "Distrito Nacional",
+    "sector": "Piantini",
+    "direccion": "Calle John F. Kennedy esq. Lope de Vega",
+    "mesas": 6,
+    "electores": 3200,
+    "activo": true,
+    "created_at": "2026-11-01T18:40:41.819Z",
+    "updated_at": "2026-11-01T18:40:41.819Z"
+  }
+]

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - Registro de Personas</title>
+  <link rel="stylesheet" href="/css/tailwind.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="h-full flex items-center justify-center p-4 antialiased bg-slate-50">
+
+  <div class="max-w-md w-full bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/80 p-8 text-center">
+    <!-- Icono de Éxito -->
+    <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/20">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+    </div>
+
+    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">¡Registro Completado con Éxito!</h1>
+    
+    <p class="text-sm text-slate-500 mt-3 leading-relaxed">
+      Sus datos han sido almacenados de forma segura bajo cifrado de grado militar. Estará recibiendo nuestros comunicados y boletines informativos.
+    </p>
+
+    <div class="mt-8 p-4 rounded-2xl bg-indigo-50 border border-indigo-100 text-xs text-indigo-900 font-medium">
+      Gracias por su participación en este proceso de seguimiento comunitario.
+    </div>
+
+    <div class="mt-8 flex flex-col sm:flex-row gap-3">
+      <a 
+        href="/registro" 
+        class="flex-1 py-3 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs transition"
+      >
+        Registrar otra persona
+      </a>
+      <a 
+        href="/auth/login" 
+        class="flex-1 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-600/20 transition"
+      >
+        Acceso Admin
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

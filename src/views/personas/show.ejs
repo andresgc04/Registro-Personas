@@ -1,0 +1,192 @@
+<%- include('../layouts/header') %>
+
+<div class="max-w-4xl mx-auto">
+  <!-- Encabezado con Nombre y Acciones -->
+  <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex items-center space-x-4">
+      <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30">
+        <%= persona.nombre.charAt(0) %><%= persona.apellido.charAt(0) %>
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight"><%= persona.nombre %> <%= persona.apellido %></h1>
+          <% if (persona.verificado_partido) { %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <svg class="w-3.5 h-3.5 mr-1 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+              Verificado
+            </span>
+          <% } else { %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+              <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              No Verificado
+            </span>
+          <% } %>
+          <% if (persona.activo) { %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Activo
+            </span>
+          <% } else { %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5"></span> Inactivo
+            </span>
+          <% } %>
+        </div>
+        <p class="text-xs text-slate-500 mt-0.5">
+          Registrado el <%= new Date(persona.created_at).toLocaleDateString('es-DO', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
+          &bull; Origen: <span class="capitalize font-semibold text-slate-700"><%= persona.origen_registro || 'Admin' %></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="flex items-center space-x-2">
+      <a href="/personas/<%= persona.id %>/editar" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+        <span>Editar</span>
+      </a>
+
+      <form action="/personas/<%= persona.id %>/toggle" method="POST" class="inline" onsubmit="return confirm('¿Desea cambiar el estado de este registro?')">
+        <% if (persona.activo) { %>
+          <button type="submit" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold text-xs transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+            <span>Inactivar</span>
+          </button>
+        <% } else { %>
+          <button type="submit" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold text-xs transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>Activar</span>
+          </button>
+        <% } %>
+      </form>
+
+      <a href="/personas" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold text-xs transition">
+        <span>Volver</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Columna Principal: Datos de la Persona -->
+    <div class="lg:col-span-2 space-y-6">
+      
+      <!-- Ficha de Datos Personales Descifrados -->
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6">
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 pb-2 border-b border-slate-100 flex items-center justify-between">
+          <span>Información de la Persona</span>
+          <span class="text-[11px] font-semibold text-emerald-600 flex items-center">
+            <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"></path></svg>
+            Descifrado Autorizado
+          </span>
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div>
+            <span class="text-slate-400 font-semibold uppercase block">Nombre Completo:</span>
+            <p class="text-slate-900 font-bold text-sm mt-0.5"><%= persona.nombre %> <%= persona.apellido %></p>
+          </div>
+
+          <div>
+            <span class="text-slate-400 font-semibold uppercase block">Sexo:</span>
+            <p class="text-slate-800 font-semibold mt-0.5">
+              <%= persona.sexo === 'M' ? 'Masculino (M)' : persona.sexo === 'F' ? 'Femenino (F)' : 'Otro' %>
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="text-slate-400 font-semibold uppercase block">No. De Cédula:</span>
+            <p class="text-indigo-900 font-mono font-bold text-sm mt-0.5"><%= persona.cedula %></p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="text-slate-400 font-semibold uppercase block">No. De Teléfono:</span>
+            <div class="flex items-center justify-between mt-0.5">
+              <p class="text-slate-900 font-mono font-bold text-sm"><%= persona.telefono %></p>
+              <% 
+                const phoneClean = persona.telefono.replace(/[^0-9]/g, '');
+                const waNum = phoneClean.length === 10 ? '1' + phoneClean : phoneClean;
+              %>
+              <a href="https://wa.me/<%= waNum %>" target="_blank" class="text-emerald-600 hover:text-emerald-700 font-bold text-[11px] flex items-center">
+                <span>WhatsApp</span> &rarr;
+              </a>
+            </div>
+          </div>
+
+          <div class="sm:col-span-2 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="text-slate-400 font-semibold uppercase block">Correo Electrónico:</span>
+            <div class="flex items-center justify-between mt-0.5">
+              <a href="mailto:<%= persona.email %>" class="text-indigo-600 hover:underline font-semibold text-sm"><%= persona.email %></a>
+              <a href="mailto:<%= persona.email %>" class="text-slate-500 hover:text-indigo-600 text-[11px] font-semibold">Redactar Correo &rarr;</a>
+            </div>
+          </div>
+
+          <div>
+            <span class="text-slate-400 font-semibold uppercase block">Sector:</span>
+            <p class="text-slate-800 font-bold text-sm mt-0.5"><%= persona.sector %></p>
+          </div>
+
+          <div>
+            <span class="text-slate-400 font-semibold uppercase block">Última Modificación:</span>
+            <p class="text-slate-600 mt-0.5"><%= new Date(persona.updated_at).toLocaleDateString('es-DO') %></p>
+          </div>
+
+          <div class="sm:col-span-2 p-3 rounded-xl bg-indigo-50/50 border border-indigo-100 flex items-center justify-between">
+            <div>
+              <span class="text-indigo-900 font-semibold uppercase block text-[11px]">Colegio Electoral:</span>
+              <p class="text-indigo-950 font-bold text-sm mt-0.5">
+                <%= persona.colegio_electoral || 'No asignado / Sin registrar' %>
+              </p>
+            </div>
+            <% if (persona.colegio_electoral) { %>
+              <span class="px-2.5 py-1 rounded-lg bg-indigo-100 text-indigo-700 font-semibold text-xs flex items-center">
+                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                Recinto
+              </span>
+            <% } %>
+          </div>
+
+          <div class="sm:col-span-2">
+            <span class="text-slate-400 font-semibold uppercase block">Dirección Residencial:</span>
+            <p class="text-slate-800 mt-0.5 bg-slate-50 p-2.5 rounded-lg border border-slate-100"><%= persona.direccion %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna Lateral: Auditoría Criptográfica OWASP -->
+    <div class="space-y-6">
+      <div class="bg-slate-900 text-white rounded-2xl p-5 shadow-lg border border-slate-800">
+        <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs uppercase tracking-wider mb-3">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          <span>Auditoría de Cifrado</span>
+        </div>
+
+        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+          En la base de datos (PostgreSQL/Supabase), ningún dato de Cédula, Teléfono o Correo se almacena en texto plano.
+        </p>
+
+        <div class="space-y-3 text-[11px] font-mono">
+          <div>
+            <span class="text-slate-500 uppercase block font-sans text-[10px]">Cédula (Ciphertext AES-256-GCM):</span>
+            <div class="bg-slate-950 p-2 rounded text-slate-300 break-all text-[10px]">
+              <%= persona.cedula_enc ? persona.cedula_enc.substring(0, 36) + '...' : 'Cifrado' %>
+            </div>
+          </div>
+
+          <div>
+            <span class="text-slate-500 uppercase block font-sans text-[10px]">Blind Index (HMAC-SHA-256):</span>
+            <div class="bg-slate-950 p-2 rounded text-indigo-400 break-all text-[10px]">
+              <%= persona.cedula_hash ? persona.cedula_hash.substring(0, 32) + '...' : 'Hash Activo' %>
+            </div>
+          </div>
+
+          <div>
+            <span class="text-slate-500 uppercase block font-sans text-[10px]">IP de Registro:</span>
+            <span class="text-slate-300"><%= persona.ip_origen || '127.0.0.1' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - Registro de Ciudadanos</title>
+  <link rel="stylesheet" href="/css/tailwind.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between p-4 sm:p-6 lg:p-8 antialiased bg-slate-50">
+
+  <div class="max-w-2xl w-full mx-auto my-auto">
+    <!-- Encabezado Público -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Formulario de Registro Ciudadano</h1>
+      <p class="text-sm text-slate-500 mt-2 max-w-md mx-auto">
+        Complete sus datos para fines de seguimiento y comunicación comunitaria. Su información está protegida bajo estándares de alta seguridad.
+      </p>
+    </div>
+
+    <!-- Tarjeta del Formulario -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/80 p-6 sm:p-10">
+      
+      <%- include('../partials/alerts') %>
+
+      <form action="/registro" method="POST" class="space-y-6" novalidate>
+        
+        <!-- Nombre y Apellido -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="nombre" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              Nombre <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="nombre" 
+              id="nombre" 
+              required 
+              placeholder="Ej: Juan Antonio"
+              value="<%= oldInput && oldInput.nombre ? oldInput.nombre : '' %>"
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+          </div>
+
+          <div>
+            <label for="apellido" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              Apellido <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="apellido" 
+              id="apellido" 
+              required 
+              placeholder="Ej: Pérez Rodríguez"
+              value="<%= oldInput && oldInput.apellido ? oldInput.apellido : '' %>"
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+          </div>
+        </div>
+
+        <!-- Sexo y Cédula -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="sexo" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              Sexo <span class="text-rose-500">*</span>
+            </label>
+            <select 
+              name="sexo" 
+              id="sexo" 
+              required 
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-white"
+            >
+              <option value="">-- Seleccione su Sexo --</option>
+              <option value="M" <%= oldInput && oldInput.sexo === 'M' ? 'selected' : '' %>>Masculino (M)</option>
+              <option value="F" <%= oldInput && oldInput.sexo === 'F' ? 'selected' : '' %>>Femenino (F)</option>
+              <option value="Otro" <%= oldInput && oldInput.sexo === 'Otro' ? 'selected' : '' %>>Otro</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="cedula" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              No. De Cédula <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="cedula" 
+              id="cedula" 
+              required 
+              oninput="maskCedulaPublic(this)"
+              maxlength="13"
+              placeholder="001-1234567-8"
+              value="<%= oldInput && oldInput.cedula ? oldInput.cedula : '' %>"
+              class="w-full px-4 py-2.5 text-sm rounded-xl font-mono border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+            <p class="text-[11px] text-slate-400 mt-1">Formato: 11 dígitos (001-1234567-8)</p>
+          </div>
+        </div>
+
+        <!-- Teléfono y Correo Electrónico -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="telefono" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              No. de Teléfono / WhatsApp <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="telefono" 
+              id="telefono" 
+              required 
+              oninput="maskTelefonoPublic(this)"
+              placeholder="(809) 555-0199"
+              value="<%= oldInput && oldInput.telefono ? oldInput.telefono : '' %>"
+              class="w-full px-4 py-2.5 text-sm rounded-xl font-mono border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+            <p class="text-[11px] text-slate-400 mt-1">Mínimo 10 dígitos numéricos</p>
+          </div>
+
+          <div>
+            <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center justify-between">
+              <span>Correo Electrónico <span class="text-slate-400 font-normal lowercase">(opcional)</span></span>
+              <span class="text-[10px] text-emerald-600 font-semibold">Cifrado AES-256</span>
+            </label>
+            <input 
+              type="email" 
+              name="email" 
+              id="email" 
+              placeholder="su.correo@ejemplo.com (opcional)"
+              value="<%= oldInput && oldInput.email ? oldInput.email : '' %>"
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+          </div>
+        </div>
+
+        <!-- Sector y Dirección -->
+        <div class="space-y-4">
+          <div>
+            <label for="sector" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              Sector / Barrio / Comunidad <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              name="sector" 
+              id="sector" 
+              required 
+              placeholder="Ej: Piantini, Bella Vista, Gazcue, Los Mina..."
+              value="<%= oldInput && oldInput.sector ? oldInput.sector : '' %>"
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+          </div>
+
+          <div>
+            <label for="direccion" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+              Dirección Residencial <span class="text-rose-500">*</span>
+            </label>
+            <textarea 
+              name="direccion" 
+              id="direccion" 
+              rows="2" 
+              required 
+              placeholder="Calle, número de casa o apartamento, edificio..."
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            ><%= oldInput && oldInput.direccion ? oldInput.direccion : '' %></textarea>
+          </div>
+
+          <!-- Campo: Colegio Electoral (Select Search) -->
+          <div class="relative" id="colegio-select-container">
+            <label for="colegio_search_input" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center justify-between">
+              <span>Colegio Electoral</span>
+              <span class="text-[10px] text-slate-400 font-normal">Búsqueda interactiva</span>
+            </label>
+            
+            <input 
+              type="hidden" 
+              name="colegio_electoral" 
+              id="colegio_electoral_val" 
+              value="<%= oldInput && oldInput.colegio_electoral ? oldInput.colegio_electoral : '' %>"
+            >
+
+            <div class="relative">
+              <input 
+                type="text" 
+                id="colegio_search_input"
+                autocomplete="off"
+                placeholder="Escriba para buscar por código, nombre o sector..."
+                value="<%= oldInput && oldInput.colegio_electoral ? oldInput.colegio_electoral : '' %>"
+                class="w-full pl-9 pr-8 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-white"
+              >
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <button 
+                type="button" 
+                id="colegio_clear_btn" 
+                title="Limpiar selección"
+                class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 p-0.5 rounded <%= (oldInput && oldInput.colegio_electoral) ? '' : 'hidden' %>"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
+
+            <!-- Dropdown flotante con colegios disponibles -->
+            <div 
+              id="colegio_dropdown" 
+              class="hidden absolute left-0 right-0 top-full mt-1 bg-white rounded-xl border border-slate-200 shadow-xl max-h-56 overflow-y-auto z-50 divide-y divide-slate-100"
+            >
+              <% if (typeof colegios !== 'undefined' && colegios.length > 0) { %>
+                <% colegios.forEach(function(col) { %>
+                  <div 
+                    class="colegio-item p-3 hover:bg-indigo-50/70 cursor-pointer transition flex items-center justify-between text-xs"
+                    data-value="<%= col.codigo %> - <%= col.nombre %>"
+                    data-search="<%= (col.codigo + ' ' + col.nombre + ' ' + col.sector + ' ' + col.municipio).toLowerCase() %>"
+                  >
+                    <div>
+                      <div class="flex items-center space-x-2">
+                        <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-mono font-bold text-[11px]"><%= col.codigo %></span>
+                        <span class="font-bold text-slate-800 text-xs"><%= col.nombre %></span>
+                      </div>
+                      <p class="text-[11px] text-slate-500 mt-0.5"><%= col.sector %>, <%= col.municipio %></p>
+                    </div>
+                  </div>
+                <% }); %>
+                <div id="colegio_no_results" class="hidden p-4 text-center text-xs text-slate-400">
+                  No se encontraron colegios con ese criterio de búsqueda.
+                </div>
+              <% } else { %>
+                <div class="p-3 text-center text-xs text-slate-400">
+                  No hay colegios electorales disponibles.
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nota de Privacidad y Cifrado -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start space-x-3 text-xs text-slate-600">
+          <svg class="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          <div>
+            <span class="font-bold text-slate-800">Privacidad y Protección Criptográfica:</span>
+            Sus datos de cédula, teléfono y correo electrónico se cifran con tecnología AES-256 en nuestros servidores y únicamente son accesibles por personal administrativo autorizado para seguimiento.
+          </div>
+        </div>
+
+        <!-- Botón de Envío -->
+        <button 
+          type="submit" 
+          class="w-full py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 transition transform active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          Enviar Mi Registro
+        </button>
+      </form>
+    </div>
+
+    <!-- Enlace a Login Admin -->
+    <div class="text-center mt-6 text-xs text-slate-400">
+      ¿Eres administrador del sistema? <a href="/auth/login" class="text-indigo-600 hover:underline font-semibold">Iniciar Sesión aquí</a>
+    </div>
+  </div>
+
+  <footer class="mt-8 text-center text-xs text-slate-400">
+    &copy; 2026 Portal de Registro Ciudadano &bull; Plataforma Segura
+  </footer>
+
+  <script>
+    function maskCedulaPublic(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 11);
+      if (v.length > 3 && v.length <= 10) {
+        v = v.substring(0, 3) + '-' + v.substring(3);
+      } else if (v.length > 10) {
+        v = v.substring(0, 3) + '-' + v.substring(3, 10) + '-' + v.substring(10, 11);
+      }
+      input.value = v;
+    }
+
+    function maskTelefonoPublic(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 10);
+      if (v.length > 3 && v.length <= 6) {
+        v = '(' + v.substring(0, 3) + ') ' + v.substring(3);
+      } else if (v.length > 6) {
+        v = '(' + v.substring(0, 3) + ') ' + v.substring(3, 6) + '-' + v.substring(6, 10);
+      }
+      input.value = v;
+    }
+
+    // Lógica interactiva para Select Search de Colegio Electoral
+    (function() {
+      const searchInput = document.getElementById('colegio_search_input');
+      const hiddenInput = document.getElementById('colegio_electoral_val');
+      const dropdown = document.getElementById('colegio_dropdown');
+      const clearBtn = document.getElementById('colegio_clear_btn');
+      const items = document.querySelectorAll('.colegio-item');
+      const noResults = document.getElementById('colegio_no_results');
+
+      if (!searchInput || !dropdown) return;
+
+      function filterItems(query) {
+        let visibleCount = 0;
+        const q = query.toLowerCase().trim();
+        items.forEach(item => {
+          const text = item.getAttribute('data-search') || '';
+          if (!q || text.includes(q)) {
+            item.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+        if (noResults) {
+          if (visibleCount === 0) noResults.classList.remove('hidden');
+          else noResults.classList.add('hidden');
+        }
+      }
+
+      searchInput.addEventListener('focus', () => {
+        filterItems(searchInput.value);
+        dropdown.classList.remove('hidden');
+      });
+
+      searchInput.addEventListener('input', () => {
+        hiddenInput.value = searchInput.value;
+        if (clearBtn) clearBtn.classList.toggle('hidden', !searchInput.value);
+        filterItems(searchInput.value);
+        dropdown.classList.remove('hidden');
+      });
+
+      items.forEach(item => {
+        item.addEventListener('click', () => {
+          const val = item.getAttribute('data-value');
+          searchInput.value = val;
+          hiddenInput.value = val;
+          if (clearBtn) clearBtn.classList.remove('hidden');
+          dropdown.classList.add('hidden');
+        });
+      });
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          searchInput.value = '';
+          hiddenInput.value = '';
+          clearBtn.classList.add('hidden');
+          filterItems('');
+          searchInput.focus();
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#colegio-select-container')) {
+          dropdown.classList.add('hidden');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

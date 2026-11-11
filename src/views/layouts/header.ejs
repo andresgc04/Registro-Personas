@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Sistema de Registro de Personas' %> - MVC Pro</title>
+  
+  <!-- Tailwind CSS (NPM local) -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+
+  <!-- Chart.js para gráficos de KPIs (NPM local) -->
+  <script src="/vendor/chart.js/chart.umd.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col antialiased text-slate-800">
+  <div class="flex-1 flex overflow-hidden">
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Contenedor Principal -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      <%- include('../partials/navbar') %>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <%- include('../partials/alerts') %>

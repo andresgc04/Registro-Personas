@@ -1,0 +1,370 @@
+<%- include('../layouts/header') %>
+
+<div class="max-w-3xl mx-auto">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Editar Registro de Persona</h1>
+      <p class="text-xs text-slate-500 mt-1">Actualice los datos. Si modifica campos sensibles, serán re-cifrados automáticamente.</p>
+    </div>
+    <div class="flex items-center space-x-2">
+      <a href="/personas/<%= persona.id %>" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+        <span>Ver Detalle</span>
+      </a>
+      <a href="/personas" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+        <span>Volver al Listado</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
+    <form action="/personas/<%= persona.id %>/editar" method="POST" class="space-y-6" novalidate>
+      
+      <!-- Fila 1: Nombre y Apellido -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="nombre" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Nombre <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="nombre" 
+            id="nombre" 
+            required 
+            value="<%= oldInput && oldInput.nombre ? oldInput.nombre : persona.nombre %>"
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+
+        <div>
+          <label for="apellido" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Apellido <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="apellido" 
+            id="apellido" 
+            required 
+            value="<%= oldInput && oldInput.apellido ? oldInput.apellido : persona.apellido %>"
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+      </div>
+
+      <!-- Fila 2: Sexo y Cédula -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="sexo" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Sexo <span class="text-rose-500">*</span>
+          </label>
+          <% const currentSexo = oldInput && oldInput.sexo ? oldInput.sexo : persona.sexo; %>
+          <select 
+            name="sexo" 
+            id="sexo" 
+            required 
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition bg-white"
+          >
+            <option value="M" <%= currentSexo === 'M' ? 'selected' : '' %>>Masculino (M)</option>
+            <option value="F" <%= currentSexo === 'F' ? 'selected' : '' %>>Femenino (F)</option>
+            <option value="Otro" <%= currentSexo === 'Otro' ? 'selected' : '' %>>Otro</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="cedula" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5 flex items-center justify-between">
+            <span>No. De Cédula <span class="text-rose-500">*</span></span>
+            <span class="text-[10px] text-emerald-600 font-semibold">Cifrado AES-256</span>
+          </label>
+          <input 
+            type="text" 
+            name="cedula" 
+            id="cedula" 
+            required 
+            oninput="maskInputCedula(this)"
+            maxlength="13"
+            value="<%= oldInput && oldInput.cedula ? oldInput.cedula : persona.cedula %>"
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl font-mono border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+      </div>
+
+      <!-- Fila 3: Teléfono y Correo Electrónico -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="telefono" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5 flex items-center justify-between">
+            <span>No. De Teléfono <span class="text-rose-500">*</span></span>
+            <span class="text-[10px] text-emerald-600 font-semibold">Cifrado AES-256</span>
+          </label>
+          <input 
+            type="text" 
+            name="telefono" 
+            id="telefono" 
+            required 
+            oninput="maskInputTelefono(this)"
+            value="<%= oldInput && oldInput.telefono ? oldInput.telefono : persona.telefono %>"
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl font-mono border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+
+        <div>
+          <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5 flex items-center justify-between">
+            <span>Correo Electrónico <span class="text-slate-400 font-normal lowercase">(opcional)</span></span>
+            <span class="text-[10px] text-emerald-600 font-semibold flex items-center">
+              <svg class="w-3 h-3 mr-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+              Cifrado AES-256
+            </span>
+          </label>
+          <input 
+            type="email" 
+            name="email" 
+            id="email" 
+            placeholder="ciudadano@ejemplo.com (opcional)"
+            value="<%= oldInput && oldInput.email ? oldInput.email : (persona.email || '') %>"
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+      </div>
+
+      <!-- Fila 4: Sector y Dirección -->
+      <div class="space-y-4">
+        <div>
+          <label for="sector" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Sector / Comunidad <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="sector" 
+            id="sector" 
+            required 
+            value="<%= oldInput && oldInput.sector ? oldInput.sector : persona.sector %>"
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+
+        <div>
+          <label for="direccion" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Dirección Residencial Completa <span class="text-rose-500">*</span>
+          </label>
+          <textarea 
+            name="direccion" 
+            id="direccion" 
+            rows="2" 
+            required 
+            class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          ><%= oldInput && oldInput.direccion ? oldInput.direccion : persona.direccion %></textarea>
+        </div>
+
+        <!-- Campo: Colegio Electoral (Select Search) -->
+        <div class="relative" id="colegio-select-container">
+          <label for="colegio_search_input" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5 flex items-center justify-between">
+            <span>Colegio Electoral</span>
+            <span class="text-[10px] text-slate-400 font-normal">Búsqueda interactiva</span>
+          </label>
+          
+          <% const currentColegio = (oldInput && oldInput.colegio_electoral) ? oldInput.colegio_electoral : (persona.colegio_electoral || ''); %>
+          <input 
+            type="hidden" 
+            name="colegio_electoral" 
+            id="colegio_electoral_val" 
+            value="<%= currentColegio %>"
+          >
+
+          <div class="relative">
+            <input 
+              type="text" 
+              id="colegio_search_input"
+              autocomplete="off"
+              placeholder="Escriba para buscar por código, nombre o sector..."
+              value="<%= currentColegio %>"
+              class="w-full pl-9 pr-8 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-white"
+            >
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <button 
+              type="button" 
+              id="colegio_clear_btn" 
+              title="Limpiar selección"
+              class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 p-0.5 rounded <%= currentColegio ? '' : 'hidden' %>"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+
+          <!-- Dropdown flotante con colegios disponibles -->
+          <div 
+            id="colegio_dropdown" 
+            class="hidden absolute left-0 right-0 top-full mt-1 bg-white rounded-xl border border-slate-200 shadow-xl max-h-60 overflow-y-auto z-50 divide-y divide-slate-100"
+          >
+            <% if (typeof colegios !== 'undefined' && colegios.length > 0) { %>
+              <% colegios.forEach(function(col) { %>
+                <div 
+                  class="colegio-item p-3 hover:bg-indigo-50/70 cursor-pointer transition flex items-center justify-between text-xs"
+                  data-value="<%= col.codigo %> - <%= col.nombre %>"
+                  data-search="<%= (col.codigo + ' ' + col.nombre + ' ' + col.sector + ' ' + col.municipio).toLowerCase() %>"
+                >
+                  <div>
+                    <div class="flex items-center space-x-2">
+                      <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-mono font-bold text-[11px]"><%= col.codigo %></span>
+                      <span class="font-bold text-slate-800 text-xs"><%= col.nombre %></span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-0.5"><%= col.sector %>, <%= col.municipio %> &bull; <span class="italic"><%= col.direccion %></span></p>
+                  </div>
+                  <div class="text-right text-[10px] text-slate-400 hidden sm:block">
+                    <span>Mesas: <%= col.mesas || 1 %></span>
+                  </div>
+                </div>
+              <% }); %>
+              <div id="colegio_no_results" class="hidden p-4 text-center text-xs text-slate-400">
+                No se encontraron colegios con ese criterio de búsqueda.
+              </div>
+            <% } else { %>
+              <div class="p-3 text-center text-xs text-slate-400">
+                No hay colegios electorales activos registrados.
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila 5: Estado de Verificación en el Partido -->
+      <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/60">
+        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2 flex items-center justify-between">
+          <span class="flex items-center">
+            <svg class="w-4 h-4 mr-1.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            Estado de Verificación en el Partido
+          </span>
+          <span class="text-[10px] text-slate-400 font-normal">Padrón partidario</span>
+        </label>
+        
+        <% 
+          const isVerificado = (oldInput && typeof oldInput.verificado_partido !== 'undefined')
+            ? (oldInput.verificado_partido === true || oldInput.verificado_partido === 'true')
+            : (persona.verificado_partido === true || persona.verificado_partido === 'true');
+        %>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Opción: No Verificado (Por defecto) -->
+          <label class="flex items-center p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-slate-400 has-[:checked]:bg-slate-100/70 has-[:checked]:shadow-xs">
+            <input 
+              type="radio" 
+              name="verificado_partido" 
+              value="false" 
+              class="w-4 h-4 text-slate-600 border-slate-300 focus:ring-slate-500"
+              <%= !isVerificado ? 'checked' : '' %>
+            >
+            <div class="ml-3">
+              <span class="text-xs font-bold text-slate-700 flex items-center">
+                <span class="w-2 h-2 rounded-full bg-slate-400 mr-1.5"></span>
+                No Verificado
+              </span>
+              <p class="text-[11px] text-slate-400 mt-0.5">Pendiente de comprobación en el padrón</p>
+            </div>
+          </label>
+
+          <!-- Opción: Verificado -->
+          <label class="flex items-center p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-emerald-50/40 transition has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50/80 has-[:checked]:shadow-xs">
+            <input 
+              type="radio" 
+              name="verificado_partido" 
+              value="true" 
+              class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500"
+              <%= isVerificado ? 'checked' : '' %>
+            >
+            <div class="ml-3">
+              <span class="text-xs font-bold text-emerald-800 flex items-center">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>
+                Verificado
+              </span>
+              <p class="text-[11px] text-emerald-700 mt-0.5">Confirmado y validado en el partido</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+        <a href="/personas/<%= persona.id %>" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold transition">
+          Cancelar
+        </a>
+        <button 
+          type="submit" 
+          class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-600/30 transition transform active:scale-98"
+        >
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const searchInput = document.getElementById('colegio_search_input');
+    const hiddenInput = document.getElementById('colegio_electoral_val');
+    const dropdown = document.getElementById('colegio_dropdown');
+    const clearBtn = document.getElementById('colegio_clear_btn');
+    const items = document.querySelectorAll('.colegio-item');
+    const noResults = document.getElementById('colegio_no_results');
+
+    if (!searchInput || !dropdown) return;
+
+    function filterItems(query) {
+      let visibleCount = 0;
+      const q = query.toLowerCase().trim();
+      items.forEach(item => {
+        const text = item.getAttribute('data-search') || '';
+        if (!q || text.includes(q)) {
+          item.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+      if (noResults) {
+        if (visibleCount === 0) noResults.classList.remove('hidden');
+        else noResults.classList.add('hidden');
+      }
+    }
+
+    searchInput.addEventListener('focus', () => {
+      filterItems(searchInput.value);
+      dropdown.classList.remove('hidden');
+    });
+
+    searchInput.addEventListener('input', () => {
+      hiddenInput.value = searchInput.value;
+      if (clearBtn) clearBtn.classList.toggle('hidden', !searchInput.value);
+      filterItems(searchInput.value);
+      dropdown.classList.remove('hidden');
+    });
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const val = item.getAttribute('data-value');
+        searchInput.value = val;
+        hiddenInput.value = val;
+        if (clearBtn) clearBtn.classList.remove('hidden');
+        dropdown.classList.add('hidden');
+      });
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        searchInput.value = '';
+        hiddenInput.value = '';
+        clearBtn.classList.add('hidden');
+        filterItems('');
+        searchInput.focus();
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#colegio-select-container')) {
+        dropdown.classList.add('hidden');
+      }
+    });
+  })();
+</script>
+
+<%- include('../layouts/footer') %>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Sistema de Registro de Personas' %> - MVC Pro</title>
+  
+  <!-- Tailwind CSS (NPM local) -->
+  <link rel="stylesheet" href="/css/tailwind.css">
+
+  <!-- Chart.js para KPIs visuales (NPM local) -->
+  <script src="/vendor/chart.js/chart.umd.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col antialiased text-slate-800">
+  <div class="flex-1 flex overflow-hidden">
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Contenido Principal -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      <%- include('../partials/navbar') %>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <%- include('../partials/alerts') %>
+        <%- body %>
+      </main>
+
+      <footer class="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
+        Sistema de Gestión y Registro de Personas &copy; 2026 &bull; Diseñado con Express MVC, Supabase y Estándares OWASP.
+      </footer>
+    </div>
+  </div>
+
+  <!-- Script móvil para el sidebar -->
+  <script>
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    if (mobileBtn && sidebar) {
+      mobileBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('hidden');
+      });
+    }
+
+    // Funciones utilitarias para máscaras de formato en inputs
+    function maskInputCedula(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 11);
+      if (v.length > 3 && v.length <= 10) {
+        v = v.substring(0, 3) + '-' + v.substring(3);
+      } else if (v.length > 10) {
+        v = v.substring(0, 3) + '-' + v.substring(3, 10) + '-' + v.substring(10, 11);
+      }
+      input.value = v;
+    }
+
+    function maskInputTelefono(input) {
+      let v = input.value.replace(/\D/g, '').substring(0, 10);
+      if (v.length > 3 && v.length <= 6) {
+        v = '(' + v.substring(0, 3) + ') ' + v.substring(3);
+      } else if (v.length > 6) {
+        v = '(' + v.substring(0, 3) + ') ' + v.substring(3, 6) + '-' + v.substring(6, 10);
+      }
+      input.value = v;
+    }
+  </script>
+</body>
+</html>

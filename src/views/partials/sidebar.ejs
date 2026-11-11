@@ -1,0 +1,89 @@
+<% const currentPath = typeof path !== 'undefined' ? path : ''; %>
+<aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between hidden lg:flex fixed inset-y-0 left-0 lg:static z-40 transition-all duration-300">
+  <div>
+    <!-- Logo en Sidebar -->
+    <div class="h-16 flex items-center px-6 border-b border-slate-800">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center text-white font-extrabold shadow-lg shadow-indigo-500/30">
+          RP
+        </div>
+        <div>
+          <span class="text-white font-bold text-base tracking-tight block">Registro MVC</span>
+          <span class="text-[10px] text-emerald-400 font-medium tracking-wide flex items-center">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> AES-256 Activo
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navegación Principal Controlada por Roles y Permisos (RBAC) -->
+    <nav class="p-4 space-y-1.5 text-sm">
+      <div class="px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Panel Principal</div>
+      
+      <!-- Dashboard KPIs -->
+      <% if (typeof hasPermission === 'function' && hasPermission('dashboard')) { %>
+        <a href="/dashboard" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium transition <%= currentPath === '/dashboard' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'hover:bg-slate-800 text-slate-300 hover:text-white' %>">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+          <span>Dashboard KPIs</span>
+        </a>
+      <% } %>
+
+      <!-- Gestión de Personas -->
+      <% if (typeof hasPermission === 'function' && hasPermission('personas')) { %>
+        <a href="/personas" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium transition <%= (currentPath === '/personas' || currentPath.startsWith('/personas')) ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'hover:bg-slate-800 text-slate-300 hover:text-white' %>">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <span>Listado de Personas</span>
+        </a>
+      <% } %>
+
+      <!-- Colegios Electorales -->
+      <% if (typeof hasPermission === 'function' && hasPermission('colegios')) { %>
+        <a href="/colegios" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium transition <%= (currentPath === '/colegios' || currentPath.startsWith('/colegios')) ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'hover:bg-slate-800 text-slate-300 hover:text-white' %>">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+          <span>Colegios Electorales</span>
+        </a>
+      <% } %>
+
+      <!-- Sección de Comunicaciones -->
+      <% if (typeof hasPermission === 'function' && hasPermission('newsletter')) { %>
+        <div class="px-3 pt-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Comunicaciones</div>
+        
+        <a href="/newsletter" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium transition <%= currentPath === '/newsletter' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'hover:bg-slate-800 text-slate-300 hover:text-white' %>">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          <span>Boletines (Email / WA)</span>
+        </a>
+      <% } %>
+
+      <!-- Sección de Seguridad y Control de Usuarios (Superadmin) -->
+      <% if (typeof hasPermission === 'function' && hasPermission('usuarios')) { %>
+        <div class="px-3 pt-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Seguridad y Accesos</div>
+        
+        <a href="/usuarios" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium transition <%= (currentPath === '/usuarios' || currentPath.startsWith('/usuarios')) ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'hover:bg-slate-800 text-slate-300 hover:text-white' %>">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          <span>Usuarios y Roles</span>
+        </a>
+      <% } %>
+
+      <div class="px-3 pt-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Acceso Público</div>
+
+      <!-- Link Público -->
+      <a href="/registro" target="_blank" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium transition text-emerald-400 hover:bg-slate-800">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+        <span>Link de Registro Web</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Footer del Sidebar con estado de seguridad -->
+  <div class="p-4 border-t border-slate-800 text-xs">
+    <div class="p-3 rounded-xl bg-slate-800/80 border border-slate-700/50">
+      <div class="flex items-center justify-between text-slate-400 mb-1">
+        <span class="font-medium text-slate-300">Seguridad OWASP</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      </div>
+      <p class="text-[11px] text-slate-400 leading-tight">
+        Control RBAC activo. Cédula, teléfono y correo protegidos con AES-256.
+      </p>
+    </div>
+  </div>
+</aside>

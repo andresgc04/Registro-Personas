@@ -1,0 +1,155 @@
+<%- include('../layouts/header') %>
+
+<div class="max-w-3xl mx-auto">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Registrar Nuevo Colegio Electoral</h1>
+      <p class="text-xs text-slate-500 mt-1">Definición de recinto, código de mesa y padrón de votantes asignados.</p>
+    </div>
+    <a href="/colegios" class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      <span>Regresar al Listado</span>
+    </a>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
+    <form action="/colegios/nuevo" method="POST" class="space-y-6" novalidate>
+      
+      <!-- Fila 1: Código y Nombre del Recinto -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label for="codigo" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Código Colegio <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="codigo" 
+            id="codigo" 
+            required 
+            placeholder="Ej: 0012A"
+            value="<%= oldInput && oldInput.codigo ? oldInput.codigo : '' %>"
+            class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono font-bold uppercase transition"
+          >
+          <p class="text-[10px] text-slate-400 mt-1">Identificador único oficial del colegio.</p>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label for="nombre" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Nombre del Recinto Electoral <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="nombre" 
+            id="nombre" 
+            required 
+            placeholder="Ej: Escuela Primaria República de Chile / Liceo Experimental"
+            value="<%= oldInput && oldInput.nombre ? oldInput.nombre : '' %>"
+            class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+      </div>
+
+      <!-- Fila 2: Municipio y Sector -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="municipio" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Municipio / Provincia <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="municipio" 
+            id="municipio" 
+            required 
+            placeholder="Ej: Distrito Nacional, Santo Domingo Este, Santiago..."
+            value="<%= oldInput && oldInput.municipio ? oldInput.municipio : '' %>"
+            class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+
+        <div>
+          <label for="sector" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Sector / Barrio <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="sector" 
+            id="sector" 
+            required 
+            placeholder="Ej: Piantini, Gazcue, Bella Vista, Los Mina..."
+            value="<%= oldInput && oldInput.sector ? oldInput.sector : '' %>"
+            class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+        </div>
+      </div>
+
+      <!-- Fila 3: Dirección Completa -->
+      <div>
+        <label for="direccion" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+          Dirección Física del Recinto <span class="text-rose-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          name="direccion" 
+          id="direccion" 
+          required 
+          placeholder="Ej: Calle Federico Geraldino esq. Av. Roberto Pastoriza #45"
+          value="<%= oldInput && oldInput.direccion ? oldInput.direccion : '' %>"
+          class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+        >
+      </div>
+
+      <!-- Fila 4: Mesas y Electores -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="mesas" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Cantidad de Mesas Electorales
+          </label>
+          <input 
+            type="number" 
+            name="mesas" 
+            id="mesas" 
+            min="1" 
+            max="100" 
+            placeholder="Ej: 5"
+            value="<%= oldInput && oldInput.mesas ? oldInput.mesas : '1' %>"
+            class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+          <p class="text-[10px] text-slate-400 mt-1">Número de colegios/mesas operativas en este recinto.</p>
+        </div>
+
+        <div>
+          <label for="electores" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Padrón Estimado de Electores
+          </label>
+          <input 
+            type="number" 
+            name="electores" 
+            id="electores" 
+            min="0" 
+            placeholder="Ej: 2500"
+            value="<%= oldInput && oldInput.electores ? oldInput.electores : '' %>"
+            class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          >
+          <p class="text-[10px] text-slate-400 mt-1">Cantidad aproximada de ciudadanos asignados.</p>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+        <a href="/colegios" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs transition">
+          Cancelar
+        </a>
+        <button 
+          type="submit" 
+          class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-600/25 transition flex items-center space-x-2"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          <span>Guardar Colegio Electoral</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>
+

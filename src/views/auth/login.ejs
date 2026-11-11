@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - Registro de Personas</title>
+  <link rel="stylesheet" href="/css/tailwind.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="h-full flex items-center justify-center p-4 antialiased bg-radial from-slate-800 to-slate-950">
+
+  <div class="w-full max-w-md">
+    <!-- Encabezado y Marca -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 text-white shadow-xl shadow-indigo-500/25 mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold text-white tracking-tight">Acceso Administrativo</h1>
+      <p class="text-sm text-slate-400 mt-1">Gestión Segura y Seguimiento de Personas</p>
+    </div>
+
+    <!-- Tarjeta del Formulario -->
+    <div class="bg-white rounded-2xl shadow-2xl p-8 border border-slate-100">
+      <%- include('../partials/alerts') %>
+
+      <form action="/auth/login" method="POST" class="space-y-5" novalidate>
+        <input type="hidden" name="redirect" value="<%= redirect %>">
+
+        <!-- Correo Electrónico -->
+        <div>
+          <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+            Correo Electrónico
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
+            </div>
+            <input 
+              type="email" 
+              name="email" 
+              id="email" 
+              required
+              value="<%= oldInput && oldInput.email ? oldInput.email : '' %>"
+              placeholder="admin@registropersonas.com" 
+              class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+              Contraseña
+            </label>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            </div>
+            <input 
+              type="password" 
+              name="password" 
+              id="password" 
+              required
+              placeholder="••••••••••••" 
+              class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+          </div>
+        </div>
+
+        <!-- Botón de Ingreso -->
+        <button 
+          type="submit" 
+          class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition transform active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          Iniciar Sesión
+        </button>
+      </form>
+
+      <!-- Credenciales de prueba en caja informativa -->
+      <div class="mt-6 pt-5 border-t border-slate-100 text-xs text-slate-500">
+        <p class="font-semibold text-slate-700 mb-1 flex items-center">
+          <svg class="w-4 h-4 mr-1 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+          Credenciales Iniciales de Administrador:
+        </p>
+        <div class="bg-slate-50 p-2.5 rounded-lg font-mono text-[11px] text-slate-600 space-y-0.5">
+          <div><strong class="text-slate-800">Email:</strong> admin@registropersonas.com</div>
+          <div><strong class="text-slate-800">Pass:</strong> Admin12345!*</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enlace a registro público -->
+    <div class="text-center mt-6">
+      <a href="/registro" class="text-xs text-slate-400 hover:text-white transition inline-flex items-center space-x-1">
+        <span>¿Deseas realizar un registro como ciudadano?</span>
+        <span class="text-indigo-400 font-semibold underline">Ir al formulario público &rarr;</span>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

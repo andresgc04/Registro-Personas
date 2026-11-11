@@ -1,0 +1,40 @@
+{
+  "name": "registro-personas-mvc",
+  "version": "1.0.0",
+  "description": "Sistema de Gestión y Registro de Personas con Express MVC, Supabase, JWT, TailwindCSS y OWASP Security",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build": "npm run build:css",
+    "build:css": "tailwindcss -i ./src/public/css/input.css -o ./src/public/css/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./src/public/css/input.css -o ./src/public/css/tailwind.css --watch"
+  },
+  "keywords": [
+    "express",
+    "mvc",
+    "supabase",
+    "owasp",
+    "jwt",
+    "tailwind"
+  ],
+  "author": "Antigravity Expert Engineer",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^4.6.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^2.5.0",
+    "nodemailer": "^6.10.0",
+    "tailwindcss": "^3.4.19"
+  }
+}
