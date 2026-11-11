@@ -1,595 +1,673 @@
 <%- include('../layouts/header') %>
 
-<div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-  <div>
-    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Módulo de Boletines Informativos</h1>
-    <p class="text-xs text-slate-500 mt-1">
-      Difusión de comunicados a personas registradas y activas vía Correo Electrónico y WhatsApp.
-    </p>
+  <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Módulo de Boletines Informativos</h1>
+      <p class="text-xs text-slate-500 mt-1">
+        Difusión de comunicados a personas registradas y activas vía Correo Electrónico y WhatsApp.
+      </p>
+    </div>
+    <div class="flex items-center space-x-2">
+      <span
+        class="inline-flex items-center px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+        <%= personasActivas.length %> Destinatarios Activos Disponibles
+      </span>
+    </div>
   </div>
-  <div class="flex items-center space-x-2">
-    <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
-      <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
-      <%= personasActivas.length %> Destinatarios Activos Disponibles
-    </span>
-  </div>
-</div>
 
-<!-- ===================================================================== -->
-<!-- PANEL DE DIAGNÓSTICO Y CONFIGURACIÓN SMTP -->
-<!-- ===================================================================== -->
-<div class="mb-8 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5">
-  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-4 border-b border-slate-100">
-    <div class="flex items-start space-x-3">
-      <div class="w-10 h-10 rounded-xl <%= smtpStatus && smtpStatus.connected ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600' %> flex items-center justify-center flex-shrink-0">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-      </div>
-      <div>
-        <div class="flex items-center space-x-2">
-          <h3 class="text-sm font-bold text-slate-900">Estado del Servicio de Correo (SMTP)</h3>
-          <% if (smtpConfig && smtpConfig.isPlaceholder) { %>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
-              Modo Pruebas / Simulación
-            </span>
-          <% } else { %>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-              SMTP Real Activo
-            </span>
-          <% } %>
+  <!-- ===================================================================== -->
+  <!-- PANEL DE DIAGNÓSTICO Y CONFIGURACIÓN SMTP -->
+  <!-- ===================================================================== -->
+  <div class="mb-8 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-4 border-b border-slate-100">
+      <div class="flex items-start space-x-3">
+        <div
+          class="w-10 h-10 rounded-xl <%= smtpStatus && smtpStatus.connected ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600' %> flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+            </path>
+          </svg>
         </div>
-        <p class="text-xs text-slate-500 mt-0.5">
-          Servidor: <strong class="text-slate-700 font-mono"><%= smtpConfig.host %>:<%= smtpConfig.port %></strong> &bull; 
-          Usuario: <strong class="text-slate-700 font-mono"><%= smtpConfig.user || 'No configurado' %></strong>
-        </p>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h3 class="text-sm font-bold text-slate-900">Estado del Servicio de Correo (SMTP)</h3>
+            <% if (smtpConfig && smtpConfig.isPlaceholder) { %>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                Modo Pruebas / Simulación
+              </span>
+              <% } else { %>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                  SMTP Real Activo
+                </span>
+                <% } %>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Servidor: <strong class="text-slate-700 font-mono">
+              <%= smtpConfig.host %>:<%= smtpConfig.port %>
+            </strong> &bull;
+            Usuario: <strong class="text-slate-700 font-mono">
+              <%= smtpConfig.user || 'No configurado' %>
+            </strong>
+          </p>
+        </div>
       </div>
+
+      <!-- Formulario para enviar correo de prueba inmediato -->
+      <form action="/newsletter/probar-smtp" method="POST" class="flex items-center space-x-2">
+        <input type="email" name="testEmail" required placeholder="ej: su.correo@gmail.com"
+          value="<%= currentUser && currentUser.email ? currentUser.email : '' %>"
+          class="px-3 py-1.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48 sm:w-60 font-medium">
+        <button type="submit"
+          class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-xs transition flex items-center space-x-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+          <span>Probar Envío</span>
+        </button>
+      </form>
     </div>
 
-    <!-- Formulario para enviar correo de prueba inmediato -->
-    <form action="/newsletter/probar-smtp" method="POST" class="flex items-center space-x-2">
-      <input 
-        type="email" 
-        name="testEmail" 
-        required 
-        placeholder="ej: su.correo@gmail.com" 
-        value="<%= currentUser && currentUser.email ? currentUser.email : '' %>"
-        class="px-3 py-1.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48 sm:w-60 font-medium"
-      >
-      <button 
-        type="submit" 
-        class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-xs transition flex items-center space-x-1"
-      >
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-        <span>Probar Envío</span>
-      </button>
-    </form>
-  </div>
-
-  <!-- Instrucciones plegables para configurar Gmail u Outlook -->
-  <div class="mt-3 text-xs">
-    <details class="cursor-pointer group">
-      <summary class="font-semibold text-indigo-600 hover:text-indigo-800 flex items-center space-x-1 list-none">
-        <span>⚙️ ¿Cómo configurar el envío con Gmail u Outlook para que lleguen correos reales?</span>
-        <svg class="w-3.5 h-3.5 transition group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-      </summary>
-      <div class="mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2 text-slate-600">
-        <p class="font-bold text-slate-800">Para enviar correos reales desde tu cuenta a bandejas reales (Gmail, Outlook, etc.):</p>
-        <ol class="list-decimal list-inside space-y-1.5 ml-1">
-          <li>Abre el archivo <strong class="font-mono text-slate-800">.env</strong> en la raíz del proyecto.</li>
-          <li>
-            <strong>Si usas Gmail:</strong>
-            <pre class="bg-white p-2 rounded border border-slate-200 font-mono text-[11px] mt-1 text-slate-800">
+    <!-- Instrucciones plegables para configurar Gmail u Outlook -->
+    <div class="mt-3 text-xs">
+      <details class="cursor-pointer group">
+        <summary class="font-semibold text-indigo-600 hover:text-indigo-800 flex items-center space-x-1 list-none">
+          <span>⚙️ ¿Cómo configurar el envío con Gmail u Outlook para que lleguen correos reales?</span>
+          <svg class="w-3.5 h-3.5 transition group-open:rotate-180" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2 text-slate-600">
+          <p class="font-bold text-slate-800">Para enviar correos reales desde tu cuenta a bandejas reales (Gmail,
+            Outlook, etc.):</p>
+          <ol class="list-decimal list-inside space-y-1.5 ml-1">
+            <li>Abre el archivo <strong class="font-mono text-slate-800">.env</strong> en la raíz del proyecto.</li>
+            <li>
+              <strong>Si usas Gmail:</strong>
+              <pre class="bg-white p-2 rounded border border-slate-200 font-mono text-[11px] mt-1 text-slate-800">
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_USER=tu-correo@gmail.com
 SMTP_PASS=xxxx xxxx xxxx xxxx  # Contraseña de aplicación de 16 letras de Google
 EMAIL_FROM="Sistema de Registro <tu-correo@gmail.com>"</pre>
-            <span class="text-[11px] text-slate-500 italic">* En Google se crea en: Cuenta de Google &rarr; Seguridad &rarr; Verificación en 2 pasos &rarr; Contraseñas de aplicaciones.</span>
-          </li>
-          <li>
-            <strong>Si usas Outlook / Hotmail:</strong>
-            <pre class="bg-white p-2 rounded border border-slate-200 font-mono text-[11px] mt-1 text-slate-800">
+              <span class="text-[11px] text-slate-500 italic">* En Google se crea en: Cuenta de Google &rarr; Seguridad
+                &rarr; Verificación en 2 pasos &rarr; Contraseñas de aplicaciones.</span>
+            </li>
+            <li>
+              <strong>Si usas Outlook / Hotmail:</strong>
+              <pre class="bg-white p-2 rounded border border-slate-200 font-mono text-[11px] mt-1 text-slate-800">
 SMTP_HOST=smtp.office365.com
 SMTP_PORT=587
 SMTP_USER=tu-correo@outlook.com
 SMTP_PASS=tu_contraseña_o_app_password
 EMAIL_FROM="Sistema de Registro <tu-correo@outlook.com>"</pre>
-          </li>
-        </ol>
-      </div>
-    </details>
-  </div>
-</div>
-
-<!-- ===================================================================== -->
-<!-- RESULTADOS DEL ÚLTIMO ENVÍO DE EMAIL (SI SE EJECUTÓ) -->
-<!-- ===================================================================== -->
-<% if (emailResults) { %>
-  <div class="mb-8 p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs">
-    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center">
-      <svg class="w-4 h-4 mr-1.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-      Detalle de Entregas por Correo Electrónico
-    </h3>
-
-    <!-- Éxitos -->
-    <% if (emailResults.exitosos.length > 0) { %>
-      <div class="mb-4">
-        <span class="text-xs font-bold text-emerald-700 block mb-2">Entregados con éxito (<%= emailResults.exitosos.length %>):</span>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-          <% emailResults.exitosos.forEach(function(item) { %>
-            <div class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/60 text-xs flex flex-col justify-between">
-              <div>
-                <p class="font-bold text-slate-800"><%= item.nombre %></p>
-                <p class="text-[11px] text-slate-500 truncate"><%= item.email %></p>
-              </div>
-              <% if (item.previewUrl) { %>
-                <a href="<%= item.previewUrl %>" target="_blank" class="mt-2 inline-flex items-center text-[10px] text-indigo-600 font-bold hover:underline">
-                  <span>Ver en visor Ethereal</span> &rarr;
-                </a>
-              <% } %>
-            </div>
-          <% }); %>
+            </li>
+          </ol>
         </div>
-      </div>
-    <% } %>
-
-    <!-- Fallidos -->
-    <% if (emailResults.fallidos.length > 0) { %>
-      <div>
-        <span class="text-xs font-bold text-rose-700 block mb-2">Envíos fallidos (<%= emailResults.fallidos.length %>):</span>
-        <div class="space-y-2">
-          <% emailResults.fallidos.forEach(function(item) { %>
-            <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-xs flex items-center justify-between">
-              <div>
-                <span class="font-bold text-rose-900"><%= item.nombre %></span> (<%= item.email %>)
-              </div>
-              <span class="text-[11px] text-rose-700 font-mono"><%= item.error %></span>
-            </div>
-          <% }); %>
-        </div>
-      </div>
-    <% } %>
-  </div>
-<% } %>
-
-<!-- ===================================================================== -->
-<!-- COLA DE WHATSAPP (SI SE GENERÓ) -->
-<!-- ===================================================================== -->
-<% if (whatsappQueue && whatsappQueue.length > 0) { %>
-  <div class="mb-8 p-6 bg-emerald-950 text-white rounded-3xl shadow-xl border border-emerald-800">
-    <div class="flex items-center justify-between mb-4 pb-3 border-b border-emerald-800/80">
-      <div>
-        <h2 class="text-lg font-bold text-emerald-300 flex items-center">
-          <svg class="w-6 h-6 mr-2 text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.42-.101.825z"/></svg>
-          Cola de Mensajes de WhatsApp Lista (<%= whatsappQueue.length %>)
-        </h2>
-        <p class="text-xs text-emerald-200 mt-1">
-          Haga clic en cada destinatario para iniciar la conversación en WhatsApp con el mensaje preformateado.
-        </p>
-      </div>
+      </details>
     </div>
+  </div>
 
-    <% if (imagenesAdjuntas && imagenesAdjuntas.length > 0) { %>
-      <div class="mb-5 p-4 bg-emerald-900/40 rounded-2xl border border-emerald-700/60">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-xs font-bold text-emerald-200 flex items-center">
-            <svg class="w-4 h-4 mr-1.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            Imágenes adjuntas al comunicado (<%= imagenesAdjuntas.length %>):
-          </span>
-          <span class="text-[11px] text-emerald-300">Incluidas en el mensaje de texto como enlace y listas para copiar</span>
+  <!-- ===================================================================== -->
+  <!-- RESULTADOS DEL ÚLTIMO ENVÍO DE EMAIL (SI SE EJECUTÓ) -->
+  <!-- ===================================================================== -->
+  <% if (emailResults) { %>
+    <div class="mb-8 p-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs">
+      <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center">
+        <svg class="w-4 h-4 mr-1.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+          </path>
+        </svg>
+        Detalle de Entregas por Correo Electrónico
+      </h3>
+
+      <!-- Éxitos -->
+      <% if (emailResults.exitosos.length> 0) { %>
+        <div class="mb-4">
+          <span class="text-xs font-bold text-emerald-700 block mb-2">Entregados con éxito (<%=
+              emailResults.exitosos.length %>):</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <% emailResults.exitosos.forEach(function(item) { %>
+              <div
+                class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/60 text-xs flex flex-col justify-between">
+                <div>
+                  <p class="font-bold text-slate-800">
+                    <%= item.nombre %>
+                  </p>
+                  <p class="text-[11px] text-slate-500 truncate">
+                    <%= item.email %>
+                  </p>
+                </div>
+                <% if (item.previewUrl) { %>
+                  <a href="<%= item.previewUrl %>" target="_blank"
+                    class="mt-2 inline-flex items-center text-[10px] text-indigo-600 font-bold hover:underline">
+                    <span>Ver en visor Ethereal</span> &rarr;
+                  </a>
+                  <% } %>
+              </div>
+              <% }); %>
+          </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-          <% imagenesAdjuntas.forEach(function(img, idx) { %>
-            <div class="flex items-center space-x-3 bg-emerald-950/80 border border-emerald-700/60 rounded-xl p-2">
-              <a href="<%= img.url %>" target="_blank" class="block shrink-0">
-                <img src="<%= img.url %>" alt="Adjunto" class="w-12 h-12 object-cover rounded-lg border border-emerald-600/50 hover:opacity-90 transition" />
-              </a>
-              <div class="text-[11px] min-w-0 flex-1">
-                <p class="font-medium text-emerald-100 truncate"><%= img.originalname %></p>
-                <p class="text-[10px] text-emerald-400 mb-1"><%= (img.size / 1024).toFixed(1) %> KB</p>
-                <div class="flex items-center space-x-2">
-                  <button type="button" onclick="copyImageToClipboard('<%= img.url %>', this)" class="px-2 py-0.5 rounded bg-emerald-600/50 hover:bg-emerald-500 hover:text-slate-950 text-emerald-200 text-[10px] font-semibold transition flex items-center">
-                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                    <span>Copiar imagen</span>
-                  </button>
-                  <a href="<%= img.url %>" target="_blank" class="text-[10px] text-emerald-400 hover:underline">Ver</a>
+        <% } %>
+
+          <!-- Fallidos -->
+          <% if (emailResults.fallidos.length> 0) { %>
+            <div>
+              <span class="text-xs font-bold text-rose-700 block mb-2">Envíos fallidos (<%= emailResults.fallidos.length
+                  %>):</span>
+              <div class="space-y-2">
+                <% emailResults.fallidos.forEach(function(item) { %>
+                  <div
+                    class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-xs flex items-center justify-between">
+                    <div>
+                      <span class="font-bold text-rose-900">
+                        <%= item.nombre %>
+                      </span> (<%= item.email %>)
+                    </div>
+                    <span class="text-[11px] text-rose-700 font-mono">
+                      <%= item.error %>
+                    </span>
+                  </div>
+                  <% }); %>
+              </div>
+            </div>
+            <% } %>
+    </div>
+    <% } %>
+
+      <!-- ===================================================================== -->
+      <!-- COLA DE WHATSAPP (SI SE GENERÓ) -->
+      <!-- ===================================================================== -->
+      <% if (whatsappQueue && whatsappQueue.length> 0) { %>
+        <div class="mb-8 p-6 bg-emerald-950 text-white rounded-3xl shadow-xl border border-emerald-800">
+          <div class="flex items-center justify-between mb-4 pb-3 border-b border-emerald-800/80">
+            <div>
+              <h2 class="text-lg font-bold text-emerald-300 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.42-.101.825z" />
+                </svg>
+                Cola de Mensajes de WhatsApp Lista (<%= whatsappQueue.length %>)
+              </h2>
+              <p class="text-xs text-emerald-200 mt-1">
+                Haga clic en cada destinatario para iniciar la conversación en WhatsApp con el mensaje preformateado.
+              </p>
+            </div>
+          </div>
+
+          <% if (imagenesAdjuntas && imagenesAdjuntas.length> 0) { %>
+            <div class="mb-5 p-4 bg-emerald-900/40 rounded-2xl border border-emerald-700/60">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-emerald-200 flex items-center">
+                  <svg class="w-4 h-4 mr-1.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                    </path>
+                  </svg>
+                  Imágenes adjuntas al comunicado (<%= imagenesAdjuntas.length %>):
+                </span>
+                <span class="text-[11px] text-emerald-300">Incluidas en el mensaje de texto como enlace y listas para
+                  copiar</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                <% imagenesAdjuntas.forEach(function(img, idx) { %>
+                  <div
+                    class="flex items-center space-x-3 bg-emerald-950/80 border border-emerald-700/60 rounded-xl p-2">
+                    <a href="<%= img.url %>" target="_blank" class="block shrink-0">
+                      <img src="<%= img.url %>" alt="Adjunto"
+                        class="w-12 h-12 object-cover rounded-lg border border-emerald-600/50 hover:opacity-90 transition" />
+                    </a>
+                    <div class="text-[11px] min-w-0 flex-1">
+                      <p class="font-medium text-emerald-100 truncate">
+                        <%= img.originalname %>
+                      </p>
+                      <p class="text-[10px] text-emerald-400 mb-1">
+                        <%= (img.size / 1024).toFixed(1) %> KB
+                      </p>
+                      <div class="flex items-center space-x-2">
+                        <button type="button"
+                          class="btn-copy-image px-2 py-0.5 rounded bg-emerald-600/50 hover:bg-emerald-500 hover:text-slate-950 text-emerald-200 text-[10px] font-semibold transition flex items-center"
+                          data-image-url="<%= img.url %>">
+
+                          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3">
+                            </path>
+                          </svg>
+
+                          <span>Copiar imagen</span>
+                        </button>
+                        <a href="<%= img.url %>" target="_blank"
+                          class="text-[10px] text-emerald-400 hover:underline">Ver</a>
+                      </div>
+                    </div>
+                  </div>
+                  <% }); %>
+              </div>
+            </div>
+            <% } %>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-72 overflow-y-auto pr-1">
+                <% whatsappQueue.forEach(function(item) { %>
+                  <div
+                    class="p-3 rounded-xl bg-emerald-900/60 border border-emerald-700/60 flex items-center justify-between">
+                    <div class="truncate mr-2">
+                      <p class="font-bold text-xs text-emerald-100 truncate">
+                        <%= item.nombreCompleto %>
+                      </p>
+                      <p class="text-[11px] font-mono text-emerald-300">
+                        <%= item.telefono %>
+                      </p>
+                    </div>
+                    <a href="<%= item.waUrl %>" target="_blank"
+                      class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center shadow-md transition">
+                      <span>Enviar</span> &rarr;
+                    </a>
+                  </div>
+                  <% }); %>
+              </div>
+        </div>
+        <% } %>
+
+          <!-- ===================================================================== -->
+          <!-- FORMULARIO DE CREACIÓN DE BOLETÍN -->
+          <!-- ===================================================================== -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+              <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
+                <h2 class="text-base font-bold text-slate-900 mb-1">Redactar Nuevo Comunicado</h2>
+                <p class="text-xs text-slate-500 mb-6">El contenido se despachará únicamente a las personas con estado
+                  Activo.</p>
+
+                <form action="/newsletter/enviar" method="POST" enctype="multipart/form-data" class="space-y-5"
+                  novalidate>
+
+                  <!-- Canal de Envío -->
+                  <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">
+                      Canal de Distribución <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-3 gap-3">
+                      <label
+                        class="flex flex-col items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-indigo-600 has-[:checked]:bg-indigo-50/50 has-[:checked]:text-indigo-900">
+                        <input type="radio" name="canal" value="email" class="sr-only" checked>
+                        <svg class="w-5 h-5 text-indigo-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                          </path>
+                        </svg>
+                        <span class="text-xs font-bold">Correo (Email)</span>
+                      </label>
+
+                      <label
+                        class="flex flex-col items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50/50 has-[:checked]:text-emerald-900">
+                        <input type="radio" name="canal" value="whatsapp" class="sr-only">
+                        <svg class="w-5 h-5 text-emerald-600 mb-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path
+                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+                        </svg>
+                        <span class="text-xs font-bold">WhatsApp</span>
+                      </label>
+
+                      <label
+                        class="flex flex-col items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-indigo-600 has-[:checked]:bg-indigo-50/50 has-[:checked]:text-indigo-900">
+                        <input type="radio" name="canal" value="ambos" class="sr-only">
+                        <svg class="w-5 h-5 text-blue-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                          </path>
+                        </svg>
+                        <span class="text-xs font-bold">Ambos Canales</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Título del Boletín -->
+                  <div>
+                    <label for="titulo"
+                      class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
+                      Título o Asunto del Comunicado <span class="text-rose-500">*</span>
+                    </label>
+                    <input type="text" name="titulo" id="titulo" required maxlength="200"
+                      placeholder="Ej: Convocatoria a Jornada Comunitaria"
+                      value="<%= oldInput && oldInput.titulo ? oldInput.titulo : '' %>"
+                      class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                  </div>
+
+                  <!-- Mensaje -->
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <label for="mensaje" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                        Cuerpo del Mensaje <span class="text-rose-500">*</span>
+                      </label>
+                      <div class="text-[11px] font-mono text-slate-500 flex items-center space-x-1"
+                        id="charCounterContainer">
+                        <span id="charCount" class="font-medium text-slate-700">0</span>
+                        <span class="text-slate-400">/</span>
+                        <span id="charLimit" class="text-slate-400 font-semibold">5,000</span>
+                        <span class="text-slate-400 font-sans text-[10px]">caracteres</span>
+                      </div>
+                    </div>
+                    <textarea name="mensaje" id="mensaje" rows="6" required maxlength="5000"
+                      placeholder="Escriba aquí la información relevante para las personas registradas (mínimo 10 caracteres)..."
+                      class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition leading-relaxed"><%= oldInput && oldInput.mensaje ? oldInput.mensaje : '' %></textarea>
+                    <div class="flex items-center justify-between mt-1 text-[11px] text-slate-400">
+                      <span>Mínimo 10 caracteres</span>
+                      <span id="charRemaining" class="font-mono">5,000 disponibles</span>
+                    </div>
+                  </div>
+
+                  <!-- Adjuntar Imágenes -->
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                        Adjuntar Imágenes <span class="text-slate-400 font-normal lowercase">(opcional - máx. 5 fotos,
+                          5MB c/u)</span>
+                      </label>
+                      <span class="text-[10px] text-indigo-600 font-semibold flex items-center">
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                          </path>
+                        </svg>
+                        Email (Incrustadas) &amp; WhatsApp
+                      </span>
+                    </div>
+
+                    <!-- Zona Dropzone para selección de archivos -->
+                    <div id="dropzone"
+                      class="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl p-4 text-center cursor-pointer bg-slate-50/50 hover:bg-indigo-50/20 transition relative">
+                      <input type="file" name="imagenes" id="imagenes" multiple
+                        accept="image/png, image/jpeg, image/jpg, image/webp, image/gif" class="sr-only">
+                      <div class="flex flex-col items-center justify-center space-y-1.5 pointer-events-none">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                          </svg>
+                        </div>
+                        <p class="text-xs text-slate-700">
+                          <span class="font-bold text-indigo-600">Haga clic para seleccionar fotos</span> o arrástrelas
+                          a este recuadro
+                        </p>
+                        <p class="text-[10px] text-slate-400">Formatos: PNG, JPG, JPEG, WEBP, GIF (Hasta 5 imágenes)</p>
+                      </div>
+                    </div>
+
+                    <!-- Galería de Miniaturas Previsualizadas -->
+                    <div id="previewContainer"
+                      class="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 hidden"></div>
+                  </div>
+
+                  <!-- Botón de Envío -->
+                  <div class="pt-3 border-t border-slate-100 flex items-center justify-end">
+                    <button type="submit"
+                      class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition transform active:scale-98 flex items-center space-x-2">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
+                      <span>Despachar Boletín a <%= personasActivas.length %> Destinatarios</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Columna Lateral: Historial de Boletines -->
+            <div>
+              <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6">
+                <h2 class="text-base font-bold text-slate-900 mb-1">Historial de Envíos</h2>
+                <p class="text-xs text-slate-500 mb-4">Registro de comunicados anteriores</p>
+
+                <div class="space-y-3">
+                  <% if (historial.length===0) { %>
+                    <p class="text-xs text-slate-400 italic text-center py-6">No se han despachado boletines aún.</p>
+                    <% } else { %>
+                      <% historial.forEach(function(bol) { %>
+                        <div
+                          class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/60 hover:bg-slate-50 transition">
+                          <div class="flex items-center justify-between text-[11px] mb-1">
+                            <span class="font-bold text-slate-700 capitalize">
+                              <%= bol.canal %>
+                            </span>
+                            <span class="text-slate-400">
+                              <%= new Date(bol.created_at).toLocaleDateString('es-DO') %>
+                            </span>
+                          </div>
+                          <h4 class="font-bold text-xs text-slate-900 line-clamp-1">
+                            <%= bol.titulo %>
+                          </h4>
+                          <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                            <%= bol.mensaje %>
+                          </p>
+                          <div
+                            class="mt-2 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400">
+                            <span>Alcance: <strong>
+                                <%= bol.destinatarios_count %>
+                              </strong> pers.</span>
+                            <% if (bol.imagenes && bol.imagenes.length> 0) { %>
+                              <span class="text-indigo-600 font-semibold flex items-center"
+                                title="<%= bol.imagenes.length %> imagen(es) adjunta(s)">
+                                <svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                  </path>
+                                </svg>
+                                <%= bol.imagenes.length %> img
+                              </span>
+                              <% } %>
+                          </div>
+                        </div>
+                        <% }); %>
+                          <% } %>
                 </div>
               </div>
             </div>
-          <% }); %>
-        </div>
-      </div>
-    <% } %>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-72 overflow-y-auto pr-1">
-      <% whatsappQueue.forEach(function(item) { %>
-        <div class="p-3 rounded-xl bg-emerald-900/60 border border-emerald-700/60 flex items-center justify-between">
-          <div class="truncate mr-2">
-            <p class="font-bold text-xs text-emerald-100 truncate"><%= item.nombreCompleto %></p>
-            <p class="text-[11px] font-mono text-emerald-300"><%= item.telefono %></p>
-          </div>
-          <a 
-            href="<%= item.waUrl %>" 
-            target="_blank" 
-            class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center shadow-md transition"
-          >
-            <span>Enviar</span> &rarr;
-          </a>
-        </div>
-      <% }); %>
-    </div>
-  </div>
-<% } %>
-
-<!-- ===================================================================== -->
-<!-- FORMULARIO DE CREACIÓN DE BOLETÍN -->
-<!-- ===================================================================== -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-  <div class="lg:col-span-2">
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
-      <h2 class="text-base font-bold text-slate-900 mb-1">Redactar Nuevo Comunicado</h2>
-      <p class="text-xs text-slate-500 mb-6">El contenido se despachará únicamente a las personas con estado Activo.</p>
-
-      <form action="/newsletter/enviar" method="POST" enctype="multipart/form-data" class="space-y-5" novalidate>
-        
-        <!-- Canal de Envío -->
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">
-            Canal de Distribución <span class="text-rose-500">*</span>
-          </label>
-          <div class="grid grid-cols-3 gap-3">
-            <label class="flex flex-col items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-indigo-600 has-[:checked]:bg-indigo-50/50 has-[:checked]:text-indigo-900">
-              <input type="radio" name="canal" value="email" class="sr-only" checked>
-              <svg class="w-5 h-5 text-indigo-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-              <span class="text-xs font-bold">Correo (Email)</span>
-            </label>
-
-            <label class="flex flex-col items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50/50 has-[:checked]:text-emerald-900">
-              <input type="radio" name="canal" value="whatsapp" class="sr-only">
-              <svg class="w-5 h-5 text-emerald-600 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-              <span class="text-xs font-bold">WhatsApp</span>
-            </label>
-
-            <label class="flex flex-col items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition has-[:checked]:border-indigo-600 has-[:checked]:bg-indigo-50/50 has-[:checked]:text-indigo-900">
-              <input type="radio" name="canal" value="ambos" class="sr-only">
-              <svg class="w-5 h-5 text-blue-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-              <span class="text-xs font-bold">Ambos Canales</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Título del Boletín -->
-        <div>
-          <label for="titulo" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">
-            Título o Asunto del Comunicado <span class="text-rose-500">*</span>
-          </label>
-          <input 
-            type="text" 
-            name="titulo" 
-            id="titulo" 
-            required 
-            maxlength="200"
-            placeholder="Ej: Convocatoria a Jornada Comunitaria"
-            value="<%= oldInput && oldInput.titulo ? oldInput.titulo : '' %>"
-            class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-          >
-        </div>
-
-        <!-- Mensaje -->
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label for="mensaje" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
-              Cuerpo del Mensaje <span class="text-rose-500">*</span>
-            </label>
-            <div class="text-[11px] font-mono text-slate-500 flex items-center space-x-1" id="charCounterContainer">
-              <span id="charCount" class="font-medium text-slate-700">0</span>
-              <span class="text-slate-400">/</span>
-              <span id="charLimit" class="text-slate-400 font-semibold">5,000</span>
-              <span class="text-slate-400 font-sans text-[10px]">caracteres</span>
-            </div>
-          </div>
-          <textarea 
-            name="mensaje" 
-            id="mensaje" 
-            rows="6" 
-            required 
-            maxlength="5000"
-            placeholder="Escriba aquí la información relevante para las personas registradas (mínimo 10 caracteres)..."
-            class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition leading-relaxed"
-          ><%= oldInput && oldInput.mensaje ? oldInput.mensaje : '' %></textarea>
-          <div class="flex items-center justify-between mt-1 text-[11px] text-slate-400">
-            <span>Mínimo 10 caracteres</span>
-            <span id="charRemaining" class="font-mono">5,000 disponibles</span>
-          </div>
-        </div>
-
-        <!-- Adjuntar Imágenes -->
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
-              Adjuntar Imágenes <span class="text-slate-400 font-normal lowercase">(opcional - máx. 5 fotos, 5MB c/u)</span>
-            </label>
-            <span class="text-[10px] text-indigo-600 font-semibold flex items-center">
-              <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              Email (Incrustadas) &amp; WhatsApp
-            </span>
           </div>
 
-          <!-- Zona Dropzone para selección de archivos -->
-          <div 
-            id="dropzone" 
-            class="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl p-4 text-center cursor-pointer bg-slate-50/50 hover:bg-indigo-50/20 transition relative"
-          >
-            <input 
-              type="file" 
-              name="imagenes" 
-              id="imagenes" 
-              multiple 
-              accept="image/png, image/jpeg, image/jpg, image/webp, image/gif" 
-              class="sr-only"
-            >
-            <div class="flex flex-col items-center justify-center space-y-1.5 pointer-events-none">
-              <div class="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-              </div>
-              <p class="text-xs text-slate-700">
-                <span class="font-bold text-indigo-600">Haga clic para seleccionar fotos</span> o arrástrelas a este recuadro
-              </p>
-              <p class="text-[10px] text-slate-400">Formatos: PNG, JPG, JPEG, WEBP, GIF (Hasta 5 imágenes)</p>
-            </div>
-          </div>
+          <!-- <script>
+            (function () {
+              // 1. Contador de Caracteres del Mensaje
+              const textarea = document.getElementById('mensaje');
+              const charCount = document.getElementById('charCount');
+              const charRemaining = document.getElementById('charRemaining');
+              const maxChars = 5000;
 
-          <!-- Galería de Miniaturas Previsualizadas -->
-          <div id="previewContainer" class="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 hidden"></div>
-        </div>
+              function updateCounter() {
+                if (!textarea || !charCount) return;
+                const length = textarea.value.length;
+                const remaining = Math.max(0, maxChars - length);
 
-        <!-- Botón de Envío -->
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-end">
-          <button 
-            type="submit" 
-            class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition transform active:scale-98 flex items-center space-x-2"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-            <span>Despachar Boletín a <%= personasActivas.length %> Destinatarios</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+                charCount.textContent = length.toLocaleString('es-DO');
+                if (charRemaining) {
+                  charRemaining.textContent = remaining.toLocaleString('es-DO') + ' disponibles';
+                }
 
-  <!-- Columna Lateral: Historial de Boletines -->
-  <div>
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6">
-      <h2 class="text-base font-bold text-slate-900 mb-1">Historial de Envíos</h2>
-      <p class="text-xs text-slate-500 mb-4">Registro de comunicados anteriores</p>
+                if (length >= maxChars) {
+                  charCount.className = 'font-bold text-rose-600';
+                  if (charRemaining) charRemaining.className = 'font-mono text-rose-600 font-bold';
+                } else if (length >= 4500) {
+                  charCount.className = 'font-bold text-amber-600';
+                  if (charRemaining) charRemaining.className = 'font-mono text-amber-600';
+                } else {
+                  charCount.className = 'font-medium text-slate-700';
+                  if (charRemaining) charRemaining.className = 'font-mono text-slate-400';
+                }
+              }
 
-      <div class="space-y-3">
-        <% if (historial.length === 0) { %>
-          <p class="text-xs text-slate-400 italic text-center py-6">No se han despachado boletines aún.</p>
-        <% } else { %>
-          <% historial.forEach(function(bol) { %>
-            <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/60 hover:bg-slate-50 transition">
-              <div class="flex items-center justify-between text-[11px] mb-1">
-                <span class="font-bold text-slate-700 capitalize"><%= bol.canal %></span>
-                <span class="text-slate-400"><%= new Date(bol.created_at).toLocaleDateString('es-DO') %></span>
-              </div>
-              <h4 class="font-bold text-xs text-slate-900 line-clamp-1"><%= bol.titulo %></h4>
-              <p class="text-[11px] text-slate-500 mt-1 line-clamp-2"><%= bol.mensaje %></p>
-              <div class="mt-2 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400">
-                <span>Alcance: <strong><%= bol.destinatarios_count %></strong> pers.</span>
-                <% if (bol.imagenes && bol.imagenes.length > 0) { %>
-                  <span class="text-indigo-600 font-semibold flex items-center" title="<%= bol.imagenes.length %> imagen(es) adjunta(s)">
-                    <svg class="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <%= bol.imagenes.length %> img
-                  </span>
-                <% } %>
-              </div>
-            </div>
-          <% }); %>
-        <% } %>
-      </div>
-    </div>
-  </div>
-</div>
+              if (textarea) {
+                textarea.addEventListener('input', updateCounter);
+                textarea.addEventListener('keyup', updateCounter);
+                textarea.addEventListener('paste', function () {
+                  setTimeout(updateCounter, 10);
+                });
+                updateCounter();
+              }
 
-<script>
-  (function() {
-    // 1. Contador de Caracteres del Mensaje
-    const textarea = document.getElementById('mensaje');
-    const charCount = document.getElementById('charCount');
-    const charRemaining = document.getElementById('charRemaining');
-    const maxChars = 5000;
+              // 2. Gestión de Selección y Previsualización de Imágenes
+              const dropzone = document.getElementById('dropzone');
+              const fileInput = document.getElementById('imagenes');
+              const previewContainer = document.getElementById('previewContainer');
+              let selectedFiles = [];
 
-    function updateCounter() {
-      if (!textarea || !charCount) return;
-      const length = textarea.value.length;
-      const remaining = Math.max(0, maxChars - length);
+              if (dropzone && fileInput && previewContainer) {
+                dropzone.addEventListener('click', function () {
+                  fileInput.click();
+                });
 
-      charCount.textContent = length.toLocaleString('es-DO');
-      if (charRemaining) {
-        charRemaining.textContent = remaining.toLocaleString('es-DO') + ' disponibles';
-      }
+                ['dragenter', 'dragover'].forEach(eventName => {
+                  dropzone.addEventListener(eventName, function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('border-indigo-600', 'bg-indigo-50/40');
+                  });
+                });
 
-      if (length >= maxChars) {
-        charCount.className = 'font-bold text-rose-600';
-        if (charRemaining) charRemaining.className = 'font-mono text-rose-600 font-bold';
-      } else if (length >= 4500) {
-        charCount.className = 'font-bold text-amber-600';
-        if (charRemaining) charRemaining.className = 'font-mono text-amber-600';
-      } else {
-        charCount.className = 'font-medium text-slate-700';
-        if (charRemaining) charRemaining.className = 'font-mono text-slate-400';
-      }
-    }
+                ['dragleave', 'drop'].forEach(eventName => {
+                  dropzone.addEventListener(eventName, function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('border-indigo-600', 'bg-indigo-50/40');
+                  });
+                });
 
-    if (textarea) {
-      textarea.addEventListener('input', updateCounter);
-      textarea.addEventListener('keyup', updateCounter);
-      textarea.addEventListener('paste', function() {
-        setTimeout(updateCounter, 10);
-      });
-      updateCounter();
-    }
+                dropzone.addEventListener('drop', function (e) {
+                  const dt = e.dataTransfer;
+                  if (dt && dt.files && dt.files.length > 0) {
+                    addFiles(dt.files);
+                  }
+                });
 
-    // 2. Gestión de Selección y Previsualización de Imágenes
-    const dropzone = document.getElementById('dropzone');
-    const fileInput = document.getElementById('imagenes');
-    const previewContainer = document.getElementById('previewContainer');
-    let selectedFiles = [];
+                fileInput.addEventListener('change', function () {
+                  if (fileInput.files && fileInput.files.length > 0) {
+                    addFiles(fileInput.files);
+                  }
+                });
 
-    if (dropzone && fileInput && previewContainer) {
-      dropzone.addEventListener('click', function() {
-        fileInput.click();
-      });
+                function addFiles(newFiles) {
+                  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                  for (let i = 0; i < newFiles.length; i++) {
+                    const file = newFiles[i];
+                    if (!allowedTypes.includes(file.type)) {
+                      alert('El archivo "' + file.name + '" no es un formato de imagen soportado.');
+                      continue;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                      alert('La imagen "' + file.name + '" supera el límite de 5MB.');
+                      continue;
+                    }
+                    if (selectedFiles.length >= 5) {
+                      alert('Solo puede adjuntar un máximo de 5 imágenes.');
+                      break;
+                    }
+                    selectedFiles.push(file);
+                  }
+                  syncFileInput();
+                  renderPreviews();
+                }
 
-      ['dragenter', 'dragover'].forEach(eventName => {
-        dropzone.addEventListener(eventName, function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          dropzone.classList.add('border-indigo-600', 'bg-indigo-50/40');
-        });
-      });
+                function syncFileInput() {
+                  const dt = new DataTransfer();
+                  selectedFiles.forEach(file => dt.items.add(file));
+                  fileInput.files = dt.files;
+                }
 
-      ['dragleave', 'drop'].forEach(eventName => {
-        dropzone.addEventListener(eventName, function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          dropzone.classList.remove('border-indigo-600', 'bg-indigo-50/40');
-        });
-      });
+                function renderPreviews() {
+                  previewContainer.innerHTML = '';
+                  if (selectedFiles.length === 0) {
+                    previewContainer.classList.add('hidden');
+                    return;
+                  }
 
-      dropzone.addEventListener('drop', function(e) {
-        const dt = e.dataTransfer;
-        if (dt && dt.files && dt.files.length > 0) {
-          addFiles(dt.files);
-        }
-      });
+                  previewContainer.classList.remove('hidden');
 
-      fileInput.addEventListener('change', function() {
-        if (fileInput.files && fileInput.files.length > 0) {
-          addFiles(fileInput.files);
-        }
-      });
+                  selectedFiles.forEach((file, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'relative group bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center';
 
-      function addFiles(newFiles) {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        for (let i = 0; i < newFiles.length; i++) {
-          const file = newFiles[i];
-          if (!allowedTypes.includes(file.type)) {
-            alert('El archivo "' + file.name + '" no es un formato de imagen soportado.');
-            continue;
-          }
-          if (file.size > 5 * 1024 * 1024) {
-            alert('La imagen "' + file.name + '" supera el límite de 5MB.');
-            continue;
-          }
-          if (selectedFiles.length >= 5) {
-            alert('Solo puede adjuntar un máximo de 5 imágenes.');
-            break;
-          }
-          selectedFiles.push(file);
-        }
-        syncFileInput();
-        renderPreviews();
-      }
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.alt = file.name;
+                    img.className = 'w-full h-20 object-cover rounded-lg mb-1.5';
 
-      function syncFileInput() {
-        const dt = new DataTransfer();
-        selectedFiles.forEach(file => dt.items.add(file));
-        fileInput.files = dt.files;
-      }
+                    const nameP = document.createElement('p');
+                    nameP.className = 'text-[10px] text-slate-700 font-medium truncate w-full px-1 text-center';
+                    nameP.textContent = file.name;
 
-      function renderPreviews() {
-        previewContainer.innerHTML = '';
-        if (selectedFiles.length === 0) {
-          previewContainer.classList.add('hidden');
-          return;
-        }
+                    const sizeP = document.createElement('p');
+                    sizeP.className = 'text-[9px] text-slate-400 font-mono';
+                    sizeP.textContent = (file.size / 1024).toFixed(0) + ' KB';
 
-        previewContainer.classList.remove('hidden');
+                    // Botón para eliminar foto
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'absolute -top-1.5 -right-1.5 w-5 h-5 bg-rose-500 hover:bg-rose-600 text-white rounded-full flex items-center justify-center text-xs shadow-md transition';
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.title = 'Quitar foto';
+                    removeBtn.addEventListener('click', function (e) {
+                      e.stopPropagation();
+                      selectedFiles.splice(index, 1);
+                      syncFileInput();
+                      renderPreviews();
+                    });
 
-        selectedFiles.forEach((file, index) => {
-          const card = document.createElement('div');
-          card.className = 'relative group bg-slate-50 border border-slate-200 rounded-xl p-1.5 flex flex-col items-center';
+                    card.appendChild(img);
+                    card.appendChild(nameP);
+                    card.appendChild(sizeP);
+                    card.appendChild(removeBtn);
+                    previewContainer.appendChild(card);
+                  });
+                }
+              }
+            })();
 
-          const img = document.createElement('img');
-          img.src = URL.createObjectURL(file);
-          img.alt = file.name;
-          img.className = 'w-full h-20 object-cover rounded-lg mb-1.5';
+            // Función global para copiar imagen al portapapeles y pegarla en WhatsApp
+            async function copyImageToClipboard(imageUrl, btn) {
+              const originalHtml = btn.innerHTML;
+              try {
+                btn.innerHTML = '<span>Copiando...</span>';
 
-          const nameP = document.createElement('p');
-          nameP.className = 'text-[10px] text-slate-700 font-medium truncate w-full px-1 text-center';
-          nameP.textContent = file.name;
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
 
-          const sizeP = document.createElement('p');
-          sizeP.className = 'text-[9px] text-slate-400 font-mono';
-          sizeP.textContent = (file.size / 1024).toFixed(0) + ' KB';
+                // Convertir a PNG mediante Canvas si no es PNG (para soporte completo de ClipboardItem)
+                let finalBlob = blob;
+                if (blob.type !== 'image/png') {
+                  const img = new Image();
+                  img.crossOrigin = 'anonymous';
+                  img.src = imageUrl;
+                  await new Promise((res, rej) => {
+                    img.onload = res;
+                    img.onerror = rej;
+                  });
+                  const canvas = document.createElement('canvas');
+                  canvas.width = img.naturalWidth;
+                  canvas.height = img.naturalHeight;
+                  const ctx = canvas.getContext('2d');
+                  ctx.drawImage(img, 0, 0);
+                  finalBlob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+                }
 
-          // Botón para eliminar foto
-          const removeBtn = document.createElement('button');
-          removeBtn.type = 'button';
-          removeBtn.className = 'absolute -top-1.5 -right-1.5 w-5 h-5 bg-rose-500 hover:bg-rose-600 text-white rounded-full flex items-center justify-center text-xs shadow-md transition';
-          removeBtn.innerHTML = '&times;';
-          removeBtn.title = 'Quitar foto';
-          removeBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            selectedFiles.splice(index, 1);
-            syncFileInput();
-            renderPreviews();
-          });
-
-          card.appendChild(img);
-          card.appendChild(nameP);
-          card.appendChild(sizeP);
-          card.appendChild(removeBtn);
-          previewContainer.appendChild(card);
-        });
-      }
-    }
-  })();
-
-  // Función global para copiar imagen al portapapeles y pegarla en WhatsApp
-  async function copyImageToClipboard(imageUrl, btn) {
-    const originalHtml = btn.innerHTML;
-    try {
-      btn.innerHTML = '<span>Copiando...</span>';
-
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-
-      // Convertir a PNG mediante Canvas si no es PNG (para soporte completo de ClipboardItem)
-      let finalBlob = blob;
-      if (blob.type !== 'image/png') {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.src = imageUrl;
-        await new Promise((res, rej) => {
-          img.onload = res;
-          img.onerror = rej;
-        });
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        finalBlob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-      }
-
-      if (navigator.clipboard && navigator.clipboard.write) {
-        await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': finalBlob })
-        ]);
-        btn.innerHTML = '<span class="text-emerald-300 font-bold">¡Copiada!</span>';
-        setTimeout(() => { btn.innerHTML = originalHtml; }, 2500);
-      } else {
-        window.open(imageUrl, '_blank');
-        btn.innerHTML = originalHtml;
-      }
-    } catch (err) {
-      console.warn('[Clipboard Error]', err);
-      window.open(imageUrl, '_blank');
-      btn.innerHTML = originalHtml;
-    }
-  }
-</script>
-
-<%- include('../layouts/footer') %>
+                if (navigator.clipboard && navigator.clipboard.write) {
+                  await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': finalBlob })
+                  ]);
+                  btn.innerHTML = '<span class="text-emerald-300 font-bold">¡Copiada!</span>';
+                  setTimeout(() => { btn.innerHTML = originalHtml; }, 2500);
+                } else {
+                  window.open(imageUrl, '_blank');
+                  btn.innerHTML = originalHtml;
+                }
+              } catch (err) {
+                console.warn('[Clipboard Error]', err);
+                window.open(imageUrl, '_blank');
+                btn.innerHTML = originalHtml;
+              }
+            }
+          </script> -->
+          <script src="/js/newsletter.js" defer></script>
+          <%- include('../layouts/footer') %>
