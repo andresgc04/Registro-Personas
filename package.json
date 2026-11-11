@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "build": "npm run build:css",
-    "build:css": "tailwindcss -i ./src/public/css/input.css -o ./src/public/css/tailwind.css --minify",
+    "build:css": "node ./node_modules/tailwindcss/lib/cli.js -i ./src/public/css/input.css -o ./src/public/css/tailwind.css --minify",
     "watch:css": "tailwindcss -i ./src/public/css/input.css -o ./src/public/css/tailwind.css --watch"
   },
   "keywords": [
